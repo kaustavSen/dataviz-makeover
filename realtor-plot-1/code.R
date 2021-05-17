@@ -4,6 +4,8 @@ library(waffle)
 library(ggtext)
 library(here)
 
+# Original article: https://www.realtor.com/news/trends/housing-market-was-rocked-by-covid-19-where-we-go-from-here/
+
 data <- read_csv(here("realtor-plot-1", "data.csv"))
 
 data_cleaned <- 
