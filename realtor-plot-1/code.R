@@ -2,6 +2,8 @@ library(tidyverse)
 library(lubridate)
 library(waffle)
 library(ggtext)
+library(systemfonts)
+library(glue)
 library(here)
 
 # Original article: https://www.realtor.com/news/trends/housing-market-was-rocked-by-covid-19-where-we-go-from-here/
@@ -14,25 +16,20 @@ data_cleaned <-
     date = mdy(month),
     month_name = month(date, label = TRUE, abbr = FALSE),
     icon = "home",
-    cnt_trans = round(cnt_trans / 10000, 0)
+    cnt_trans = round(cnt_trans / 10000, 0),
+    month_name = glue("{month_name}<br><span style='font-family: JetBrains Mono; color:grey; font-size:15px; font-face: bold'>{cnt_trans * 10}k</span>")
   ) 
 
-ggplot(data_cleaned) +
-  geom_waffle(aes(values = cnt_trans, fill = icon), 
-              flip = TRUE, show.legend = FALSE, 
-              color = "white", size = 0.6) +
-  facet_wrap(~month_name, ncol = 2, strip.position = "left") +
-  scale_fill_manual(values = "#81b29a") +
-  coord_equal() +
-  theme_void() +
-  theme(
-    strip.text.y.left = element_text(angle = 0, vjust = 0.6, hjust = 1)
-  )
+font <- system_fonts() %>% filter(family == "Font Awesome 5 Free")
+register_font(
+  name = "Font Awesome",
+  plain = font$path[1]
+)
 
 p <- 
   ggplot(data_cleaned) +
   geom_pictogram(aes(values = cnt_trans, color = icon, label = icon), 
-              size = 6, flip = TRUE, show.legend = FALSE, family = "Font Awesome 5 Free") +
+              size = 6, flip = TRUE, show.legend = FALSE, family = "Font Awesome") +
   facet_wrap(~month_name, ncol = 2, strip.position = "left") +
   scale_color_manual(values = "#2a9d8f") +
   labs(
@@ -43,13 +40,16 @@ p <-
   theme(
     plot.title.position = "plot",
     plot.caption.position = "plot",
-    plot.title = element_text(size = rel(1.8), face = "bold"),
+    plot.title = element_text(family = "Oswald", hjust = 0.5, 
+                              size = rel(1.8), face = "bold", margin = margin(b = 10)),
     plot.caption = element_markdown(size = rel(1), hjust = 1, color = "grey30"),
     plot.margin = margin(10, 20, 10, 20),
     panel.spacing = unit(0.5, "lines"),
-    strip.text.y.left = element_text(vjust = 0.5, hjust = 1, size = rel(1.4), face = "bold")
+    strip.text.y.left = element_markdown(vjust = 0.5, hjust = 1, size = rel(1.4), 
+                                         face = "bold", lineheight = 1.2)
   )
 
-ragg::agg_png(here("realtor-plot-1", "plot.png"), height = 12, width = 8, units = "in", res = 320)
+ragg::agg_png(here("realtor-plot-1", "plot.png"), 
+              height = 12, width = 10, units = "in", res = 320)
 print(p)
 dev.off()
