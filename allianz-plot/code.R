@@ -1,4 +1,5 @@
 library(tidyverse)
+library(patchwork)
 library(here)
 
 # Source: https://www.allianz.com/content/dam/onemarketing/azcom/Allianz_com/economic-research/publications/specials/en/2021/may/2021_05_14_InsuranceGrowth.pdf
@@ -63,10 +64,24 @@ rects_country <-
     xmin = rep(0, 10),
     xmax = perc_pc_ins,
     ymin = seq(1.1, 20.1, 2),
-    ymax = seq(1.9, 20.9, 2)
+    ymax = seq(1.9, 20.9, 2),
+    label_x = case_when(
+      perc_pc_ins == max(perc_pc_ins) ~ xmax - 1.2,
+      perc_pc_ins >= 5 ~ xmax - 0.1,
+      TRUE ~ xmax + 1
+    ),
+    hjust = case_when(
+      perc_pc_ins >= 5 ~ 1,
+      TRUE ~ 0
+    ),
+    label_y = (ymin + ymax) / 2,
+    label_color = if_else(perc_pc_ins >= 5, "white", "grey40"),
+    label = if_else(perc_pc_ins == max(perc_pc_ins), 
+                    paste0(perc_pc_ins, "%"), paste0(perc_pc_ins, " "))
   )
 
-ggplot() +
+bar_chart <- 
+  ggplot() +
   # Horizontal rectangles for labels
   geom_rect(
     data = rects_labels,
@@ -96,14 +111,53 @@ ggplot() +
     size = 7,
     hjust = 0
   ) +
+  # Number labels
+  geom_text(
+    data = rects_country,
+    aes(
+      x = label_x,
+      y = label_y,
+      label = label,
+      color = label_color,
+      hjust = hjust
+    ),
+    family = "JetBrains Mono",
+    fontface = "bold",
+    size = 6
+  ) +
   labs(
-    title = "10 Countries account for 75% of the global P&C insurance market"
+    title = "10 Countries account for more than 75% of the global P&C insurance market"
   ) +
   scale_x_continuous(limits = c(NA, 50)) +
+  scale_color_identity() +
   theme_void(base_size = 12) +
   theme(
     plot.margin = margin(10, 10, 10, 10),
     plot.title.position = "plot",
-    plot.title = element_text(family = "Oswald", size = rel(2.5), face = "bold")
-  ) +
-  ggsave(here("allianz-plot", "plot.png"), width = 14, height = 12, dpi = 320)
+    plot.title = element_text(family = "Oswald", size = rel(2.5), 
+                              face = "bold", hjust = 0.5)
+  ) 
+
+moon_chart <- 
+  ggplot(tibble(values = c(0.77, 0.23))) +
+  gggibbous::geom_moon(aes(x = 0.5, y = 0.5, ratio = values),
+                       fill = "grey40", color = "grey40",
+                       right = FALSE, show.legend = FALSE, size = 130) +
+  gggibbous::geom_moon(aes(x = 0.5, y = 0.5, ratio = values),
+                       fill = NA, color = "grey40",
+                       right = TRUE, show.legend = FALSE, size = 130) +
+  annotate("text", x = 0.49, y = 0.5,
+           label = "Top 10\n77%", family = "JetBrains Mono",
+           size = 8, color = "white", fontface = "bold", lineheight = 1) +
+  annotate("text", x = 0.53, y = 0.5,
+           label = "Others\n23%", family = "JetBrains Mono",
+           size = 5.5, color = "black", fontface = "bold", lineheight = 0.9) +
+  scale_x_continuous(limits = c(0.45, 0.55)) +
+  scale_y_continuous(limits = c(0.45, 0.55)) +
+  coord_cartesian(clip = "off") +
+  theme_void()
+
+bar_chart + 
+  inset_element(moon_chart, 0.5, 0.5, 0.9, 0.5) +
+  ggsave(here("allianz-plot", "plot.png"), 
+         width = 14, height = 12, dpi = 320)
