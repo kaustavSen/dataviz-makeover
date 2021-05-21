@@ -12,3 +12,7 @@
 
 ## Goldman Sachs Plot [<a href='goldmansachs-plot/code.R'>Code</a>]
 <img src='goldmansachs-plot/plot.png' />
+
+
+## Allianz Plot [<a href='allianz-plot/code.R'>Code</a>]
+<img src='allianz-plot/plot.png' width=700 height=600/>
