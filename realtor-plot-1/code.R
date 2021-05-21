@@ -34,7 +34,7 @@ p <-
   scale_color_manual(values = "#2a9d8f") +
   labs(
     title = "Number of completed home purchases in 2020",
-    caption = "<span style='font-family: \"Font Awesome 5 Free\"; color: #2a9d8f'>home</span> = 10,000 purchases"
+    caption = "<span style='font-family: \"Font Awesome\"; color: #2a9d8f'>home</span> = 10,000 purchases"
   ) +
   theme_void(base_family = "Roboto", base_size = 12) +
   theme(
