@@ -19,4 +19,4 @@
 
 
 ## Barclays Plot [<a href='barclays-plot/code.R'>Code</a>]
-<img src='barclays-plot/plot_wo_border.png' />
+<img src='barclays-plot/plot.png' />
