@@ -16,3 +16,7 @@
 
 ## Allianz Plot [<a href='allianz-plot/code.R'>Code</a>]
 <img src='allianz-plot/plot.png' width=700 height=600/>
+
+
+## Barclays Plot [<a href='barclays-plot/code.R'>Code</a>]
+<img src='barclays-plot/plot.png' />
