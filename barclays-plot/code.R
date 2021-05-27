@@ -37,7 +37,7 @@ p <- ggplot(data) +
   ggthemes::theme_clean(base_family = "Roboto") +
   theme(
     plot.margin = margin(10, 20, 10, 20),
-    panel.background = element_rect(colour = "white"),
+    plot.background = element_rect(colour = "white"),
     plot.title.position = "plot",
     plot.title = element_text(family = "Oswald", size = rel(1.6), margin = margin(b = 15)),
     panel.grid.minor = element_blank(),
@@ -49,4 +49,4 @@ p <- ggplot(data) +
     axis.title.x = element_text(hjust = 0.99, vjust = 18, size = rel(0.9), face = "bold")
   )
 
-ggsave(here("barclays-plot", "plot.png"), p, width = 9, height = 6, dpi = 320)
+ggsave(here("barclays-plot", "plot_wo_border.png"), p, width = 9, height = 6, dpi = 320)
