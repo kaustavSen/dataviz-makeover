@@ -37,6 +37,7 @@ p <- ggplot(data) +
   ggthemes::theme_clean(base_family = "Roboto") +
   theme(
     plot.margin = margin(10, 20, 10, 20),
+    panel.background = element_rect(fill = NA, colour = NA),
     plot.title.position = "plot",
     plot.title = element_text(family = "Oswald", size = rel(1.6), margin = margin(b = 15)),
     panel.grid.minor = element_blank(),
