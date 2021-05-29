@@ -20,3 +20,6 @@
 
 ## Barclays Plot [<a href='barclays-plot/code.R'>Code</a>]
 <img src='barclays-plot/plot.png' />
+
+## Deloitte Plot [<a href='deloitte-plot/code.R'>Code</a>]
+<img src='deloitte-plot/plot.png' />
