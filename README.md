@@ -23,3 +23,6 @@
 
 ## Deloitte Plot [<a href='deloitte-plot/code.R'>Code</a>]
 <img src='deloitte-plot/plot.png' />
+
+## KPMG Plot [<a href='kpmg-plot/code.R'>Code</a>]
+<img src='kpmg-plot/plot.png' />
