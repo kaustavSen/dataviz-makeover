@@ -13,7 +13,7 @@ data <- data %>%
 ggplot() +
   geom_text(data = filter(data, type == "positive"),
             aes(label = factors, x = 0, y = 8:1, 
-                size = c(rep(5, 5), 6, 6, 6),
+                size = c(rep(6, 3), rep(5, 5)),
                 color = c(rep("#0081a7", 3), rep("#00afb9", 5))), 
             hjust = 0, family = "Source Sans Pro",
             fontface = c(rep("bold", 3), rep("plain", 5))) +
@@ -28,7 +28,7 @@ ggplot() +
             fontface = "bold") +
   geom_text(data = filter(data, type == "negative"),
             aes(label = factors, x = 4, y = 8:1, 
-                size = c(rep(5, 5), 6, 6, 6),
+                size = c(rep(6, 3), rep(5, 5)),
                 color = c(rep("#f07167", 3), rep("#fed9b7", 5))), 
             hjust = 0, family = "Source Sans Pro",
             fontface = c(rep("bold", 3), rep("plain", 5))) +
