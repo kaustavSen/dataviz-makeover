@@ -11,6 +11,7 @@ data <- read_csv(here::here("misc", "data", "funding.csv"))
 # Set theme
 theme_set(theme_minimal(base_size = 21, base_family = "Poppins"))
 
+# Update theme
 theme_update(legend.position = "none",
              plot.title.position = "plot",
              plot.title = element_text(face = "bold", hjust = 0.5),
