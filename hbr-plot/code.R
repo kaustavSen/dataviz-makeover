@@ -1,6 +1,7 @@
 library(tidyverse)
 library(magick)
 library(ggtext)
+library(systemfonts)
 
 data <- read_csv("hbr-plot/data.csv")
 
@@ -29,17 +30,23 @@ labels <- c(
 plot_data <- data %>% 
   mutate(company = fct_reorder(company, rev_per_employee))
 
+register_font(
+  name = "JetBrains Mono user",
+  plain = "C:/Users/kaust732/Downloads/JetBrainsMono-Bold.ttf"
+)
+
+ragg::agg_png("hbr-plot/plot.png", width = 9, height = 7, units = "in", res = 300)
 ggplot(plot_data, aes(rev_per_employee, company)) +
   geom_col(fill = "#1697a6", width = 0.7) +
   geom_col(data = filter(plot_data, company == "HBP"), fill = "#e76f51", width = 0.7) +
   annotate("text", y = 6.2, x = 570, label = "REVENUE PER EMPLOYEE", family = "Roboto Condensed",
            fontface = "bold", size = 3.5, color = "white", hjust = 1) +
-  annotate("text", y = 5.95, x = 570, label = "$582k", family = "JetBrains Mono",
+  annotate("text", y = 5.95, x = 570, label = "$582k", family = "JetBrains Mono user",
            fontface = "bold", size = 5.5, color = "white", hjust = 1) +
   geom_text(
     data = filter(plot_data, company != "HBP"),
     aes(x = rev_per_employee - 8, label = paste0(rev_per_employee, "k")),
-    family = "JetBrains Mono", fontface = "bold", size = 5.5, 
+    family = "JetBrains Mono user", fontface = "bold", size = 5.5, 
     color = "white", hjust = 1
   ) +
   scale_x_continuous(name = "", expand = expansion(mult = 0)) +
@@ -48,7 +55,7 @@ ggplot(plot_data, aes(rev_per_employee, company)) +
     labels = labels
   ) +
   labs(
-    title = str_wrap("<span style='color: #e76f51'>HBP's</span> leaner staff gives it much better leverage than other orgnaizations", 90) %>% 
+    title = str_wrap("<span style='color: #e76f51'>HBP's</span> leaner staff gives it much better leverage than other organizations", 90) %>% 
       str_replace_all("\\n", "<br />")
   ) +
   theme_minimal() +
@@ -63,4 +70,4 @@ ggplot(plot_data, aes(rev_per_employee, company)) +
     axis.text.y = element_markdown(),
     axis.line.y = element_line(size = 0.8, color = "black")
   )
-ggsave("hbr-plot/plot.png", width = 9, height = 7, dpi = 300)
+dev.off()
